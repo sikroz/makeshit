@@ -1,16 +1,15 @@
+#!/usr/bin/env python3
 import os
 import random
 import string
-
 
 class Color:
     OK = '\033[92m'
     ERR = '\033[91m'
     END = '\033[0m'
 
-
 class MakeShit:
-    def __init__(self, path, count_files=1000, total_size=200):
+    def __init__(self, path, count_files, total_size):
         """
         :param path: Путь где надо нашитеть
         :param count_files: Общее кол-во файлов
@@ -27,9 +26,9 @@ class MakeShit:
         return ''.join(random.choice(lower) for i in range(length))
 
     def generate_data(self):
-        if not os.path.exists(self.path):
-            print(Color.ERR + "[ERROR]" + Color.END, self.path, "not exists")
-            return False
+        if os.path.exists(self.path):
+             os.removedirs(self.path)
+        os.makedirs(self.path)
 
         dir_list = [
             "/src", "/src/config", "/media", "/media/css",
@@ -39,10 +38,10 @@ class MakeShit:
         #Кол-во файлов в одной дире
         cf = int(self.count_files / len(dir_list))
         #Размер одного файла
-        fs = int(self.total_size / self.count_files * 1000**2)
+        fs = int(self.total_size * 2**20 / self.count_files)
 
         for folder in dir_list:
-            path = os.path.join(self.path + folder)
+            path = os.path.normpath(self.path + folder)
             try:
                 os.mkdir(path)
                 print(Color.OK + "[OK]" + Color.END, "Создание директории", path)
