@@ -23,8 +23,7 @@ class MakeShit:
 
     @staticmethod
     def generate_string(length):
-        lower = string.ascii_lowercase.lower()
-        return ''.join(random.choice(lower) for i in range(length))
+        return ('%0' + str(length) + 'x') % random.randrange(16**length)
 
     def generate_data(self):
         if os.path.exists(self.path):
